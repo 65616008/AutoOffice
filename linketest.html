@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>领客测试</title>
+</head>
+<body>
+<script>
+    //以下功能为快速选中领客系统分销商品设置里，指定的搜索项，然后勾选该项的复选框，最后可以手动实现批量更改佣金比例
+    var checkBoxeven = document.getElementsByClassName('even'); //获取偶数列
+    var checkBox = document.getElementsByTagName('tr');
+    //var CheckboxIcon = checkBox[1].getElementsByClassName('listCheckboxIcon');  //获取复选框元素
+    //var Commission = checkBox[1].getElementsByClassName('result');  //获取佣金元素
+    var CheckboxIcon;
+    var Checkback;
+    var Commission;
+    var CommissionNum;
+    var findtext ="20元";  //要查找的数据
+    var setnum = 12.5; //要设置的值
+
+    var num = 0;    //获得本页匹配的条数
+
+    for(var i=1; i < checkBox.length; i++){
+        CheckboxIcon = checkBox[i].getElementsByClassName('listCheckboxIcon');  //获取复选框元素
+        Checkback = checkBox[i].getElementsByTagName("td"); //获取td，设置元素背景色
+        Commission = checkBox[i].getElementsByClassName('result');  //获取佣金元素
+        CommissionNum = Commission[1].innerHTML;  //获取佣金数据
+
+        if (CommissionNum == findtext) {    //如果佣金数据为8%，设置这一列的背景，以及选中该商品的复选框
+            for(var ii =0; ii<Checkback.length; ii++){
+                Checkback[ii].style.backgroundColor="#2fff64";
+            }
+                //console.log('没变化前'+num);
+                num++;
+                //console.log('变化后'+num);
+            //因为复选框并不是真正的复选框元素，而是span改写的，所以需要如下设置选中状态
+            CheckboxIcon[0].classList.add("listCheckboxSel");//设置复选框的样式
+            CheckboxIcon[0].setAttribute("ischeck", "true");//设置复选框为选中
+        }
+    }
+
+    console.log('%c本页匹配到'+findtext+'的记录有'+num+'条', "background: red;color:white;");//谷歌浏览器console可以设置文字背景
+    //console.log("%c需要输出的信息 ", "background: red;color:white;");//谷歌浏览器console可以设置文字背景
+    document.querySelector('#isComm').click();//点击设置店员佣金按钮
+
+    //2秒后填佣金以及点击确定
+    var tt = setTimeout("document.getElementsByClassName('checkboxIcon')[0].click()"+
+            "document.querySelector('#percentVal').value = setnum;"+
+            "document.getElementsByClassName('g-btn')[0].click();"
+        ,2000);
+
+    //document.getElementsByClassName('checkboxIcon')[0].click();//点击同步修改下级所有门店复选框
+    //document.getElementsByName('plsz')[0].click();//点击按百分比前面的radio单选
+    //document.getElementsByName('plsz')[1].click();//点击按固定价前面的radio单选
+    //document.querySelector('#percentVal').value = setnum;//填佣金值
+    //document.getElementsByClassName('g-btn')[0].click();//点击确定按钮
+    //document.getElementsByClassName('g-btn')[1].click();//点击取消按钮
+
+
+
+    //document.querySelector('._showPageNum').value = 100;//更改每页显示的数量，最大为100
+    //document.querySelector('._showPageNumBtn').click();//显示的数量的确定按钮，点击
+    //document.querySelector('#isComm').click();//批量设置店员佣金按钮，点击
+    //document.querySelector('#isBrandComm').click();//批量设置合伙人佣金按钮，点击
+
+    console.log('aaaaaaaa');
+    var t = setTimeout("console.log('等待5秒后执行下步');console.log('bbbbbbbb');",5000);//5秒后执行setTimeout里的语句
+
+
+
+
+
+
+</script>
+</body>
+</html>
