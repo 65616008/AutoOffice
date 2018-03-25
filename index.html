@@ -6,5 +6,25 @@
 </head>
 <body>
     <h1>JavaScript实现自动化办公（自用）</h1>
+    <input type="file" id="excel-file">
+    <script type="text/javascript" src="JS/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="JS/xlsx.full.min.js"></script>
+    <script>
+//        var path="C:\\Users\\Administrator\\Desktop\\test.xlsx";
+//        var files = path.files;
+//        console.log(files);
+var aaa = document.createElement('input');
+var ccc = document.getElementsByClassName('g-searchBtn');//ccc[0]是领客佣金设置里的查询按钮
+ccc[0].after(aaa);
+aaa.type='file';
+aaa.id='upfile';
+        document.getElementById('upfile').change(function (e) {
+            var files = e.target.files;
+
+            console.log(files);
+        });
+
+
+    </script>
 </body>
 </html>
