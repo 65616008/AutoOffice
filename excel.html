@@ -5,15 +5,17 @@
     <title>读写excel测试</title>
 </head>
 <body>
-    <input type="file" id="excel-file">
-    <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" src="js/xlsx.core.min.js"></script>
+<input type="file" id="excel-file">
+<script type="text/javascript" src="JS/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="JS/xlsx.core.min.js"></script>
 <script>
-    $('#excel-file').change(function(e) {
+    var exceldata;
+    var tablename = new Array();
+    $('#excel-file').change(function (e) {
         var files = e.target.files;
 
         var fileReader = new FileReader();
-        fileReader.onload = function(ev) {
+        fileReader.onload = function (ev) {
             try {
                 var data = ev.target.result,
                     workbook = XLSX.read(data, {
@@ -33,16 +35,36 @@
                     fromTo = workbook.Sheets[sheet]['!ref'];
                     console.log(fromTo);
                     persons = persons.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
-                    // break; // 如果只取第一张表，就取消注释这行
+                    break; // 如果只取第一张表，就取消注释这行
                 }
             }
 
             console.log(persons);
+            //console.log(persons[0]);
+            //console.log(persons[0].姓名);
+            exceldata = persons;//把表格获取到的值传递给外面的变量
         };
 
         // 以二进制方式打开文件
         fileReader.readAsBinaryString(files[0]);
     });
+
+    function norun() {   //该方法是用在谷歌console的代码，所以为了避免运行而写个不运行的方法
+        for (var prop in exceldata[0]) {
+            console.log("exceldata[" + prop + "]=" + exceldata[0][prop]);
+            if (prop == '姓名') {
+                //console.log('如果prop等于姓名，则输出他的姓名：'+exceldata[0][prop]);
+                tablename = exceldata[0][prop];
+            }
+        }
+
+        for (var i = 0; i < exceldata.length; i++) {
+            //name = name.concat(exceldata[i]['姓名']);
+            tablename.push(exceldata[i]['姓名']);//把表头为‘姓名’的数据放到tabalename数组里
+        }
+
+    }
+
 </script>
 
 </body>

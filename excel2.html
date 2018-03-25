@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p><input type="file" name="xlfile" id="xlf" /> ... or click here to select a file</p>
+    Use Transferrables: (when available) <input type="checkbox" name="xferable" checked><br />
+    Use readAsBinaryString: (when available) <input type="checkbox" name="userabs" checked><br />
+    <pre id="content"></pre>
+    <p id="content2"></p>
+
+<script type="text/javascript" src="JS/jquery-1.11.3.min.js"></script>
+<script src="JS/xlsx.core.min.js"></script>
+<script>
+    //ie不支持rABS
+    var rABS = typeof FileReader !== "undefined" && typeof FileReader.prototype !== "undefined" && typeof FileReader.prototype.readAsBinaryString !== "undefined";
+    if(!rABS) {
+        document.getElementsByName("userabs")[0].disabled = true;
+        document.getElementsByName("userabs")[0].checked = false;
+    }
+    var transferable = typeof Worker !== 'undefined';
+    if(!transferable) {
+        document.getElementsByName("xferable")[0].disabled = true;
+        document.getElementsByName("xferable")[0].checked = false;
+    }
+
+    function fixdata(data) {
+        alert("fixdata");
+        var o = "", l = 0, w = 10240;
+        for(; l<data.byteLength/w; ++l) o+=String.fromCharCode.apply(null,new Uint8Array(data.slice(l*w,l*w+w)));
+        o+=String.fromCharCode.apply(null, new Uint8Array(data.slice(l*w)));
+        return o;
+    }
+
+    function get_radio_value( radioName ) {
+        alert("get_radio_value");
+        var radios = document.getElementsByName( radioName );
+        for( var i = 0; i < radios.length; i++ ) {
+            if( radios[i].checked || radios.length === 1 ) {
+                return radios[i].value;
+            }
+        }
+    }
+
+    function to_json(workbook) {
+        alert("to_json");
+        var result = {};
+        workbook.SheetNames.forEach(function(sheetName) {
+            var roa = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+            if(roa.length > 0){
+                result[sheetName] = roa;
+            }
+        });
+        return result;
+    }
+
+    function process_wb(wb) {
+        alert("process_wb");
+        var output = JSON.stringify(to_json(wb), 2, 2);//去掉后2个参数，显示结果只有1行，没有缩进
+        if(content.innerText === undefined) out.textContent = output;
+        else content.innerText = output;
+        $("#content2").text(output)
+    }
+
+    var xlf = document.getElementById('xlf');
+    function handleFile(e) {
+        alert("handleFile");
+        rABS = document.getElementsByName("userabs")[0].checked;
+        var files = e.target.files;
+        var f = files[0];
+        {
+            var reader = new FileReader();
+            var name = f.name;
+            reader.onload = function(e) {
+                if(typeof console !== 'undefined') console.log("onload", new Date(), rABS);
+                var data = e.target.result;
+                var wb;
+                if(rABS) {
+                    wb = XLSX.read(data, {type: 'binary'});
+                } else {
+                    var arr = fixdata(data);
+                    wb = XLSX.read(btoa(arr), {type: 'base64'});
+                }
+                process_wb(wb);
+            };
+            if(rABS) reader.readAsBinaryString(f);
+            else reader.readAsArrayBuffer(f);
+        }
+    }
+
+    if(xlf.addEventListener) xlf.addEventListener('change', handleFile, false);
+</script>
+</body>
+</html>
