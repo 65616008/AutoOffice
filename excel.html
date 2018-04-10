@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>读写excel测试</title>
+    <title>读取excel测试</title>
 </head>
 <body>
 <input type="file" id="excel-file">
-<script type="text/javascript" src="JS/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="JS/xlsx.full.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/xlsx.full.min.js"></script>
 <script>
     var exceldata;
     var tablename = new Array();
@@ -17,11 +17,11 @@
         var fileReader = new FileReader();
         fileReader.onload = function (ev) {
             try {
-                var data = ev.target.result,
-                    workbook = XLSX.read(data, {
+                var data = ev.target.result;
+                var workbook = XLSX.read(data, {
                         type: 'binary'
-                    }), // 以二进制流方式读取得到整份excel表格对象
-                    persons = []; // 存储获取到的数据
+                    }); // 以二进制流方式读取得到整份excel表格对象
+                var persons = []; // 存储获取到的数据
             } catch (e) {
                 console.log('文件类型不正确');
                 return;
@@ -49,7 +49,8 @@
         fileReader.readAsBinaryString(files[0]);
     });
 
-    function norun() {   //该方法是用在谷歌console的代码，所以为了避免运行而写个不运行的方法
+    //该方法是用在谷歌console的代码，所以为了避免运行而写个不运行的方法
+    function norun() {
         for (var prop in exceldata[0]) {
             console.log("exceldata[" + prop + "]=" + exceldata[0][prop]);
             if (prop == '姓名') {

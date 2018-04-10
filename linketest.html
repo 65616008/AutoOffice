@@ -44,10 +44,11 @@
     document.querySelector('#isComm').click();//点击设置店员佣金按钮
 
     //2秒后填佣金以及点击确定
-    var tt = setTimeout("document.getElementsByClassName('checkboxIcon')[0].click()"+
-            "document.querySelector('#percentVal').value = setnum;"+
-            "document.getElementsByClassName('g-btn')[0].click();"
-        ,2000);
+    var tt = setTimeout(function () {
+            document.getElementsByClassName('checkboxIcon')[0].click();
+            document.querySelector('#percentVal').value = setnum;
+            document.getElementsByClassName('g-btn')[0].click();
+        },2000);
 
     //document.getElementsByClassName('checkboxIcon')[0].click();//点击同步修改下级所有门店复选框
     //document.getElementsByName('plsz')[0].click();//点击按百分比前面的radio单选

@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<!-- (C) 2013-present  SheetJS http://sheetjs.com -->
+<!-- vim: set ts=2: -->
+<html>
+<head>
+    <title>excelwrite</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+<input type="file" id="excel-file">
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/shim.min.js"></script>
+<script type="text/javascript" src="js/xlsx.full.min.js"></script>
+<script>
+
+</script>
+<script>
+//    var exceldata;
+//    var tablename = new Array();
+//    $('#excel-file').change(function (e) {
+//        var files = e.target.files;
+//
+//        var fileReader = new FileReader();
+//        fileReader.onload = function (ev) {
+//            try {
+//                var data = ev.target.result,
+//                    workbook = XLSX.read(data, {
+//                        type: 'binary'
+//                    }), // 以二进制流方式读取得到整份excel表格对象
+//                    persons = []; // 存储获取到的数据
+//            } catch (e) {
+//                console.log('文件类型不正确');
+//                return;
+//            }
+//
+//            // 表格的表格范围，可用于判断表头是否数量是否正确
+//            var fromTo = '';
+//            // 遍历每张表读取
+//            for (var sheet in workbook.Sheets) {
+//                if (workbook.Sheets.hasOwnProperty(sheet)) {
+//                    fromTo = workbook.Sheets[sheet]['!ref'];
+//                    console.log(fromTo);
+//                    persons = persons.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
+//                    break; // 如果只取第一张表，就取消注释这行
+//                }
+//            }
+//
+//            console.log(persons);
+//        };
+//
+//        // 以二进制方式打开文件
+//        fileReader.readAsBinaryString(files[0]);
+//    });
+</script>
+
+<script>
+//    function getParameterByName(name) {
+//        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+//        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+//            results = regex.exec(location.search);
+//        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+//    }
+
+
+    /* original data */
+    var filename = "write.xlsx";
+    var data = [[1,2,3],[true, false, null, "sheetjs"],["foo","bar",new Date("2014-02-19T14:30Z"), "0.3"], ["baz", null, "qux"]];
+    var ws_name = "SheetJS";
+
+    if(typeof console !== 'undefined') console.log(new Date());
+    var wb = XLSX.utils.book_new();
+    var ws = XLSX.utils.aoa_to_sheet(data);
+    console.log('wb:'+wb);
+    console.log('ws'+ws);
+    //wb=XLSX.utils.encode_cell({s: {c: 1, r: 1}, e: {c: 4, r: 4}});
+    //ws["B2"].s = {
+    //font: { sz: 14, bold: true, color: { rgb: "FFFFAA00" }},
+    //auto: 1,
+    //rgb: "FFFFAA00" ,
+    //theme: "1", tint: "-0.25",
+    //indexed: 64,
+            //fill: {bgColor: {indexed: 64,rgb: "FF000000"}, fgColor: {indexed: 64,rgb: "FF000000"}}
+    //    };
+
+    //ws[0] = XLSX.utils.encode_range(range);
+    /* add worksheet to workbook */
+    XLSX.utils.book_append_sheet(wb, ws, ws_name);
+
+    /* write workbook */
+    if(typeof console !== 'undefined') console.log(new Date());
+    XLSX.writeFile(wb, filename);
+    if(typeof console !== 'undefined') console.log(new Date());
+</script>
+
+<script type="text/javascript">
+//    var _gaq = _gaq || [];
+//    _gaq.push(['_setAccount', 'UA-36810333-1']);
+//    _gaq.push(['_setDomainName', 'sheetjs.com']);
+//    _gaq.push(['_setAllowLinker', true]);
+//    _gaq.push(['_trackPageview']);
+//
+//    (function() {
+//        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+//        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+//        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+//    })();
+
+    var tr = document.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    var tdText = tr[0].innerText;
+    if(tdText == '暂无商品'){ console.log('没有数据') }else{ console.log('有数据') }
+
+
+</script>
+</body>
+</html>
